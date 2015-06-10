@@ -175,6 +175,9 @@
   background: #ef5350;
 }
 
+.remodal-body {
+    text-align: left;
+}
 /* Remove inner padding and border in Firefox 4+ for the button tag. */
 
 .remodal-confirm::-moz-focus-inner,

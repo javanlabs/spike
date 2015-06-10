@@ -21,8 +21,10 @@
                         </a>
                         <div class="remodal" data-remodal-id="modal-{{ $item['id'] }}">
                             <button data-remodal-action="close" class="remodal-close"></button>
-                            <h1>{{ $item['name'] }}</h1>
-                            {!! $item['content'] !!}
+                            <h3>{{ $item['name'] }}</h3>
+                            <div class="remodal-body">
+                                {!! $item['content'] !!}
+                            </div>
                             <button data-remodal-action="cancel" class="remodal-cancel">Skip</button>
                             <button data-remodal-action="confirm" class="remodal-confirm">Tegakkan</button>
                         </div>
