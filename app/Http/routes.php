@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('diagnose', 'DiagnoseController@index');
+Route::get('diagnose/{id}', 'DiagnoseController@edit');
+Route::post('diagnose/{id}', 'DiagnoseController@update');
 
-Route::get('home', 'HomeController@index');
-
-Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
-]);
+//Route::get('home', 'HomeController@index');
+//
+//Route::controllers([
+//	'auth' => 'Auth\AuthController',
+//	'password' => 'Auth\PasswordController',
+//]);
