@@ -15,6 +15,9 @@
                         </td>
                         <td>
                             {{ $item['name'] }}
+                            @if($item['page'])
+                                (halaman {{ $item['page'] }})
+                            @endif
                         </td>
                     </tr>
                 @endforeach
