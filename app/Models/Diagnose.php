@@ -8,5 +8,5 @@ class Diagnose extends Model
 {
     protected $table = 'diagnose';
 
-    protected $fillable = ['name', 'content'];
+    protected $fillable = ['name', 'content', 'page'];
 }

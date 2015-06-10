@@ -5,8 +5,12 @@
 <form method="post" action="{{ url('diagnose/' . $item['id']) }}">
     {!! csrf_field() !!}
     <div class="row">
-        <label >Name</label>
+        <label >Diagnosis</label>
         <input class="u-full-width" type="text" name="name" value="{{ $item['name'] }}">
+    </div>
+    <div class="row">
+        <label >Nomor halaman dalam buku NANDA</label>
+        <input class="" type="text" name="page" value="{{ $item['page'] }}">
     </div>
     <div class="row">
         <label >Content</label>
