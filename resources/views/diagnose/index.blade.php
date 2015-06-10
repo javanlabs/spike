@@ -11,7 +11,7 @@
                 @foreach($items as $item)
                     <tr>
                         <td style="width: 100px">
-                            <a class="button" href="{{ url('diagnose/' . $item['id']) }}">Edit</a>
+                            <a class="button" href="{{ url('diagnose/edit/' . $item['id']) }}">Edit</a>
                         </td>
                         <td>
                             {{ $item['name'] }}

@@ -52,7 +52,8 @@ class DiagnoseController extends Controller
      */
     public function show($id)
     {
-        //
+        $item = Diagnose::find($id);
+        return view('diagnose.show', compact('item'));
     }
 
     /**
