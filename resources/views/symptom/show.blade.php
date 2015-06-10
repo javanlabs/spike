@@ -2,10 +2,15 @@
 
 @section('content')
     <div class="row">
+        <h3>Symptom</h3>
         @foreach($hierarchy as $path)
             <a href="{{ url('symptom/' . $path['id']) }}">{{ $path['name'] }}</a> &raquo;
         @endforeach
-        <h1>{{ $item['name'] }}</h1>
+        <span>{{ $item['name'] }}</span>
+
+        <hr/>
+
+        <h5>Pilih symptom berikutnya:</h5>
         <table  class="u-full-width">
             <tbody class="list">
             @foreach($children as $item)

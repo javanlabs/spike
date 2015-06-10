@@ -22,10 +22,13 @@
     <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('css/skeleton.css') }}">
     <link rel="stylesheet" href="{{ asset('redactor/redactor.css') }}" />
+    <link rel="stylesheet" href="{{ asset('remodal/remodal.css') }}" />
+    <link rel="stylesheet" href="{{ asset('remodal/remodal-default-theme.css') }}" />
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="{{ asset('redactor/redactor.min.js') }}"></script>
     <script src="{{ asset('hideseek/jquery.hideseek.min.js') }}"></script>
+    <script src="{{ asset('remodal/remodal.min.js') }}"></script>
 
     <!-- Favicon
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
