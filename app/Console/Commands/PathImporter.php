@@ -78,6 +78,7 @@ class PathImporter extends Command
             }
         });
 
+        $this->info('Building tree structure');
         // delete all leafe nodes
         // insert to diagnose
         // do mapping
