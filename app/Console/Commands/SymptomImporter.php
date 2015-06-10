@@ -3,28 +3,28 @@
 namespace App\Console\Commands;
 
 use App\Models\Diagnose;
-use App\Models\Path;
+use App\Models\Symptom;
 use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Excel;
 
-class PathImporter extends Command
+class SymptomImporter extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'assessment:import';
+    protected $signature = 'symptom:import';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Import (ISDA) assessment from excel.';
+    protected $description = 'Import (ISDA) symptom from excel.';
 
     protected $tree = [];
 
@@ -56,9 +56,9 @@ class PathImporter extends Command
             return false;
         }
 
-        DB::table('path')->truncate();
+        DB::table('symptom')->truncate();
         DB::table('diagnose')->truncate();
-        DB::table('path_diagnose')->truncate();
+        DB::table('symptom_diagnose')->truncate();
 
         Excel::load($file, function($reader){
 
@@ -83,7 +83,7 @@ class PathImporter extends Command
         // insert to diagnose
         // do mapping
         Diagnose::unguard();
-        foreach(Path::allLeaves()->get() as $node)
+        foreach(Symptom::allLeaves()->get() as $node)
         {
             $diagnoseName = $node['name'];
             if(in_array(trim($diagnoseName), ['', '-']))
@@ -124,7 +124,7 @@ class PathImporter extends Command
             return false;
         }
 
-        $node = Path::create(['name' => $text]);
+        $node = Symptom::create(['name' => $text]);
 
         if($columnNumber > 0)
         {
