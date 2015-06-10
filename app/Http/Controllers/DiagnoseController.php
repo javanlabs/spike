@@ -29,7 +29,7 @@ class DiagnoseController extends Controller
      */
     public function create()
     {
-        //
+        return view('diagnose.create');
     }
 
     /**
@@ -39,7 +39,9 @@ class DiagnoseController extends Controller
      */
     public function store()
     {
-        //
+        Diagnose::create(Input::only('name', 'content'));
+
+        return redirect('diagnose');
     }
 
     /**

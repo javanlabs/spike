@@ -12,6 +12,8 @@
 */
 
 Route::get('diagnose', 'DiagnoseController@index');
+Route::get('diagnose/create', 'DiagnoseController@create');
+Route::post('diagnose', 'DiagnoseController@store');
 Route::get('diagnose/{id}', 'DiagnoseController@edit');
 Route::post('diagnose/{id}', 'DiagnoseController@update');
 

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="row">
-        <h1>Diagnosis</h1>
+        <h1>Diagnosis <a class="button" href="{{ url('diagnose/create') }}">Tambah</a></h1>
 
         <input id="search" class="u-full-width" name="search" placeholder="Cari diagnosis..." type="text" data-list=".list">
 
