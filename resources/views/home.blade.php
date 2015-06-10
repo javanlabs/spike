@@ -1,6 +1,9 @@
 @extends('layout')
 
 @section('content')
+    <br/>
+    <br/>
+    <br/>
     <div class="row">
         <div style="text-align: center">
             <h3>Silakan pilih menu</h3>
