@@ -17,6 +17,9 @@ Route::post('diagnose', 'DiagnoseController@store');
 Route::get('diagnose/{id}', 'DiagnoseController@edit');
 Route::post('diagnose/{id}', 'DiagnoseController@update');
 
+Route::get('symptom', 'SymptomController@index');
+Route::get('symptom/{id}', 'SymptomController@show');
+
 //Route::get('home', 'HomeController@index');
 //
 //Route::controllers([
