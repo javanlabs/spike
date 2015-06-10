@@ -11,6 +11,8 @@
 |
 */
 
+Route::get('/', 'HomeController@index');
+
 Route::get('diagnose', 'DiagnoseController@index');
 Route::get('diagnose/create', 'DiagnoseController@create');
 Route::post('diagnose', 'DiagnoseController@store');
@@ -21,7 +23,6 @@ Route::get('diagnose/{id}', 'DiagnoseController@show');
 Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/{id}', 'SymptomController@show');
 
-//Route::get('home', 'HomeController@index');
 //
 //Route::controllers([
 //	'auth' => 'Auth\AuthController',

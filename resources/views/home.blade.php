@@ -1,17 +1,11 @@
-@extends('app')
+@extends('layout')
 
 @section('content')
-<div class="container">
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Home</div>
-
-				<div class="panel-body">
-					You are logged in!
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
+    <div class="row">
+        <div style="text-align: center">
+            <h3>Silakan pilih menu</h3>
+            <a class="button button-primary" href="{{ url('symptom') }}">ISDA Online</a>
+            <a class="button button-primary" href="{{ url('diagnose') }}">NANDA Editor</a>
+        </div>
+    </div>
 @endsection
