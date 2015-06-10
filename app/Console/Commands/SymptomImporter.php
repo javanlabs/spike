@@ -57,7 +57,7 @@ class SymptomImporter extends Command
         }
 
         DB::table('symptom')->truncate();
-        DB::table('diagnose')->truncate();
+        //DB::table('diagnose')->truncate();
         DB::table('symptom_diagnose')->truncate();
 
         Excel::load($file, function($reader){
