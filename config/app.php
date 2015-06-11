@@ -149,6 +149,7 @@ return [
          * Third Party Service Providers...
          */
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Collective\Html\HtmlServiceProvider',
 
     ],
 
@@ -199,7 +200,8 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
 
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
-
+        'Form'  => 'Collective\Html\FormFacade',
+        'Html'  => 'Collective\Html\HtmlFacade',
 	],
 
 ];

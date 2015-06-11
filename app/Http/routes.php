@@ -22,6 +22,7 @@ Route::get('diagnose/{id}', 'DiagnoseController@show');
 
 Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/{id}', 'SymptomController@show');
+Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 
 Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
 Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');

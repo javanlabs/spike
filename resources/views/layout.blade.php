@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="{{ asset('redactor/redactor.css') }}" />
     <link rel="stylesheet" href="{{ asset('remodal/remodal.css') }}" />
     <link rel="stylesheet" href="{{ asset('remodal/remodal-default-theme.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script src="{{ asset('redactor/redactor.min.js') }}"></script>

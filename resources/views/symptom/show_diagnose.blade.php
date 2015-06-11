@@ -10,7 +10,19 @@
 
         <hr/>
 
-        <h3>Kemungkinan Diagnosis</h3>
+        <h3>Kemungkinan Diagnosis <a class="button" href="#" data-remodal-target="modal-create">Tambah</a></h3>
+        <form class="remodal" data-remodal-id="modal-create" action="{{ url('symptom/' . $item['id'] . '/diagnose') }}" method="post">
+            {!! csrf_field() !!}
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <h3>Tambah Diagnosis</h3>
+            <div class="remodal-body">
+                {!! Form::select('diagnose_id', $availableDiagnoses, ['class' => 'u-full-width']) !!}
+            </div>
+            <button data-remodal-action="confirm" class="button">Batal</button>
+            <button type="submit" class="button button-primary">Simpan</button>
+        </form>
+
+
         <table  class="u-full-width">
             <tbody class="list">
             @foreach($diagnoses as $item)
@@ -19,15 +31,22 @@
                         <a href="{{ url('diagnose/' . $item['id']) }}" data-remodal-target="modal-{{ $item['id'] }}">
                             {{ $item['name'] }}
                         </a>
-                        <div class="remodal" data-remodal-id="modal-{{ $item['id'] }}">
+                        <form class="remodal" data-remodal-id="modal-{{ $item['id'] }}">
                             <button data-remodal-action="close" class="remodal-close"></button>
                             <h3>{{ $item['name'] }}</h3>
                             <div class="remodal-body">
-                                {!! $item['content'] !!}
+                                <p>
+                                    <strong>Definisi</strong>
+                                    {{ $item['definition'] }}
+                                </p>
+                                <p>
+                                    @include('symptom._checklist', ['checklist' => $item['checklist']])
+                                </p>
                             </div>
-                            <button data-remodal-action="cancel" class="remodal-cancel">Skip</button>
-                            <button data-remodal-action="confirm" class="remodal-confirm">Tegakkan</button>
-                        </div>
+                            <button data-remodal-action="confirm" class="button button-primary">Ditegakkan</button>
+                            <button data-remodal-action="confirm" class="button button-negative">Dianulir</button>
+                            <button data-remodal-action="confirm" class="button">Perlu Pengkajian Lebih Lanjut</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach

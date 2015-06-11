@@ -39,7 +39,7 @@ class DiagnoseController extends Controller
      */
     public function store()
     {
-        Diagnose::create(Input::only('name', 'content', 'page'));
+        Diagnose::create(Input::except('_token'));
 
         return redirect('diagnose');
     }
@@ -77,7 +77,7 @@ class DiagnoseController extends Controller
     public function update($id)
     {
         $item = Diagnose::find($id);
-        $item->update(Input::only('name', 'content', 'page'));
+        $item->update(Input::except('_token'));
 
         return redirect('diagnose');
     }
