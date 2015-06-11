@@ -31,7 +31,7 @@ Route::get('testcase', function(){
     {
         foreach($diagnose->symptoms as $symptom)
         {
-            $paths = $symptom->ancestors()->get();
+            $paths = $symptom->ancestorsAndSelf()->get();
             foreach($paths as $path)
             {
                 echo $path['name'] . '&#8594;';
