@@ -24,7 +24,6 @@ Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/{id}', 'SymptomController@show');
 Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 
-
 Route::get('testcase', function(){
     $diagnoses = \App\Models\Diagnose::whereNotNull('checklist')->get();
 
@@ -42,6 +41,10 @@ Route::get('testcase', function(){
         }
     }
 });
+
+Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
+Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
+
 //
 //Route::controllers([
 //	'auth' => 'Auth\AuthController',

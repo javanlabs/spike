@@ -8,6 +8,7 @@ class Diagnose extends Model
 {
     protected $table = 'diagnose';
 
+    protected $hidden = array('pivot');
     protected $fillable = ['name', 'definition', 'checklist', 'content', 'page'];
 
     public function symptoms()
