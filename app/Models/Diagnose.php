@@ -9,4 +9,5 @@ class Diagnose extends Model
     protected $table = 'diagnose';
 
     protected $fillable = ['name', 'definition', 'checklist', 'content', 'page'];
+
 }

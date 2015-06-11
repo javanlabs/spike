@@ -19,15 +19,22 @@
                         <a href="{{ url('diagnose/' . $item['id']) }}" data-remodal-target="modal-{{ $item['id'] }}">
                             {{ $item['name'] }}
                         </a>
-                        <div class="remodal" data-remodal-id="modal-{{ $item['id'] }}">
+                        <form class="remodal" data-remodal-id="modal-{{ $item['id'] }}">
                             <button data-remodal-action="close" class="remodal-close"></button>
                             <h3>{{ $item['name'] }}</h3>
                             <div class="remodal-body">
-                                {!! $item['content'] !!}
+                                <p>
+                                    <strong>Definisi</strong>
+                                    {{ $item['definition'] }}
+                                </p>
+                                <p>
+                                    @include('symptom._checklist', ['checklist' => $item['checklist']])
+                                </p>
                             </div>
-                            <button data-remodal-action="cancel" class="remodal-cancel">Skip</button>
-                            <button data-remodal-action="confirm" class="remodal-confirm">Tegakkan</button>
-                        </div>
+                            <button data-remodal-action="confirm" class="button button-primary">Ditegakkan</button>
+                            <button data-remodal-action="confirm" class="button button-negative">Dianulir</button>
+                            <button data-remodal-action="confirm" class="button">Perlu Pengkajian Lebih Lanjut</button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
