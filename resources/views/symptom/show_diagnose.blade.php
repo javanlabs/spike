@@ -10,7 +10,19 @@
 
         <hr/>
 
-        <h3>Kemungkinan Diagnosis</h3>
+        <h3>Kemungkinan Diagnosis <a class="button" href="#" data-remodal-target="modal-create">Tambah</a></h3>
+        <form class="remodal" data-remodal-id="modal-create" action="{{ url('symptom/' . $item['id'] . '/diagnose') }}" method="post">
+            {!! csrf_field() !!}
+            <button data-remodal-action="close" class="remodal-close"></button>
+            <h3>Tambah Diagnosis</h3>
+            <div class="remodal-body">
+                {!! Form::select('diagnose_id', $availableDiagnoses, ['class' => 'u-full-width']) !!}
+            </div>
+            <button data-remodal-action="confirm" class="button">Batal</button>
+            <button type="submit" class="button button-primary">Simpan</button>
+        </form>
+
+
         <table  class="u-full-width">
             <tbody class="list">
             @foreach($diagnoses as $item)

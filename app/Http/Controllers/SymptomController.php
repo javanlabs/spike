@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diagnose;
 use App\Models\Symptom;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class SymptomController extends Controller
 {
@@ -55,7 +57,9 @@ class SymptomController extends Controller
         if($item->isLeaf())
         {
             $diagnoses = $item->diagnoses;
-            return view('symptom.show_diagnose', compact('item', 'diagnoses', 'hierarchy'));
+            $availableDiagnoses = Diagnose::lists('name', 'id');
+
+            return view('symptom.show_diagnose', compact('item', 'diagnoses', 'hierarchy', 'availableDiagnoses'));
         }
 
         $children = $item->children()->get();
@@ -93,5 +97,13 @@ class SymptomController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function addDiagnose($id)
+    {
+        $symptom = Symptom::find($id);
+        $symptom->diagnoses()->attach(Input::get('diagnose_id'));
+
+        return redirect()->to('symptom/' . $id);
     }
 }
