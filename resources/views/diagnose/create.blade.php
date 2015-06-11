@@ -9,6 +9,10 @@
         <input class="u-full-width" type="text" name="name" value="{{ Input::old('name') }}">
     </div>
     <div class="row">
+        <label >Definisi</label>
+        <input class="u-full-width" type="text" name="definition" value="{{ Input::old('definition') }}">
+    </div>
+    <div class="row">
         <label >Nomor halaman dalam buku NANDA</label>
         <input class="" type="text" name="page" value="{{ Input::old('page') }}">
     </div>
