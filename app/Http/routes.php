@@ -36,9 +36,9 @@ Route::get('testcase', function(){
             {
                 echo $path['name'] . '&#8594;';
             }
+            echo $diagnose['name'];
+            echo '<hr>';
         }
-        echo $diagnose['name'];
-        echo '<hr>';
     }
 });
 
