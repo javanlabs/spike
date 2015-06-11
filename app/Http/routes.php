@@ -24,6 +24,24 @@ Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/{id}', 'SymptomController@show');
 Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 
+
+Route::get('testcase', function(){
+    $diagnoses = \App\Models\Diagnose::whereNotNull('checklist')->get();
+
+    foreach($diagnoses as $diagnose)
+    {
+        foreach($diagnose->symptoms as $symptom)
+        {
+            $paths = $symptom->ancestors()->get();
+            foreach($paths as $path)
+            {
+                echo $path['name'] . '&#8594;';
+            }
+            echo $diagnose['name'];
+            echo '<hr>';
+        }
+    }
+});
 //
 //Route::controllers([
 //	'auth' => 'Auth\AuthController',
