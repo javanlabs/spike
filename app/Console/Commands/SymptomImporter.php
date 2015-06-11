@@ -91,7 +91,7 @@ class SymptomImporter extends Command
                 continue;
             }
 
-            $this->info($diagnoseName);
+            //$this->info($diagnoseName);
 
             $diagnose = Diagnose::whereName($diagnoseName)->first();
             if(!$diagnose)
@@ -119,6 +119,8 @@ class SymptomImporter extends Command
 
     protected function parseCell($text, $columnNumber)
     {
+        $text = trim($text);
+
         if($text == '')
         {
             return false;
