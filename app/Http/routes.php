@@ -23,6 +23,8 @@ Route::get('diagnose/{id}', 'DiagnoseController@show');
 Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/{id}', 'SymptomController@show');
 
+Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
+Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
 //
 //Route::controllers([
 //	'auth' => 'Auth\AuthController',
