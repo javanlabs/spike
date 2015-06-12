@@ -1,2 +1,18 @@
 .button-negative {background-color: #e57373; color: #fff}
 .button-negative:hover {background-color: #ef5350; border-color: #ef5350; color: #fff}
+
+.diagnose-status {
+    background-color: #999999;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 2px 10px;
+    margin: 0 10px;
+    font-size: .9em;
+}
+
+.diagnose-status-apply {
+    background-color: #33C3F0;
+}
+.diagnose-status-reject {
+    background-color: #e57373;
+}

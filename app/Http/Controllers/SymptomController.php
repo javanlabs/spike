@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
 
 class SymptomController extends Controller
@@ -49,7 +50,7 @@ class SymptomController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $item = Symptom::find($id);
         $hierarchy = $item->ancestors()->get();
@@ -59,7 +60,21 @@ class SymptomController extends Controller
             $diagnoses = $item->diagnoses;
             $availableDiagnoses = Diagnose::lists('name', 'id');
 
-            return view('symptom.show_diagnose', compact('item', 'diagnoses', 'hierarchy', 'availableDiagnoses'));
+            $assessment = $request->session()->get('assessment');
+            $appliedDiagnoses = $rejectedDiagnoses = [];
+            foreach($assessment as $ass)
+            {
+                if($ass['action'] == 'reject')
+                {
+                    $rejectedDiagnoses[] = $ass['diagnose_id'];
+                }
+                else
+                {
+                    $appliedDiagnoses[] = $ass['diagnose_id'];
+                }
+            }
+
+            return view('symptom.show_diagnose', compact('item', 'diagnoses', 'hierarchy', 'availableDiagnoses', 'assessment', 'appliedDiagnoses', 'rejectedDiagnoses'));
         }
 
         $children = $item->children()->get();
@@ -105,5 +120,11 @@ class SymptomController extends Controller
         $symptom->diagnoses()->attach(Input::get('diagnose_id'));
 
         return redirect()->to('symptom/' . $id);
+    }
+
+    public function assessment(Request $request)
+    {
+        $request->session()->push('assessment', $request->except('_token'));
+        return redirect()->to('symptom/' . $request->get('symptom_id') . '#diagnose-' . $request->get('diagnose_id'));
     }
 }

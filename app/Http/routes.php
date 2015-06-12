@@ -24,6 +24,8 @@ Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/{id}', 'SymptomController@show');
 Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 
+Route::post('assessment', 'SymptomController@assessment');
+
 Route::get('testcase', function(){
     $diagnoses = \App\Models\Diagnose::whereNotNull('checklist')->get();
 
