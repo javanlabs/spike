@@ -62,9 +62,9 @@
                                     @include('symptom._checklist', ['checklist' => $diagnose['checklist']])
                                 </p>
                             </div>
-                            <button type="submit" name="action" value="apply" class="button button-primary">Ditegakkan</button>
                             <button type="submit" name="action" value="reject" class="button button-negative">Dianulir</button>
                             <button data-remodal-action="confirm" class="button">Perlu Pengkajian Lebih Lanjut</button>
+                            <button type="submit" name="action" value="apply" class="button button-primary">Ditegakkan</button>
                         </form>
                     </td>
                 </tr>

@@ -23,6 +23,11 @@
 
             </h4>
 
+            <strong>Definisi</strong><br/>
+            <p>
+                {{ $diagnose['definition'] }}
+            </p>
+
             <?php unset($item['action']) ?>
 
             <div class="row">

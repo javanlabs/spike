@@ -10,9 +10,31 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\View;
 
 class SymptomController extends Controller
 {
+    function __construct()
+    {
+        $assessment = Session::get('assessment', []);
+        $appliedDiagnoses = $rejectedDiagnoses = [];
+
+        foreach($assessment as $ass)
+        {
+            if($ass['action'] == 'reject')
+            {
+                $rejectedDiagnoses[] = $ass['diagnose_id'];
+            }
+            else
+            {
+                $appliedDiagnoses[] = $ass['diagnose_id'];
+            }
+        }
+        view()->share('appliedDiagnoses', $appliedDiagnoses);
+        view()->share('rejectedDiagnoses', $rejectedDiagnoses);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -134,4 +156,12 @@ class SymptomController extends Controller
 
         return view('symptom.printout', compact('assessment'));
     }
+
+    public function refresh(Request $request)
+    {
+        $request->session()->remove('assessment');
+        return redirect()->to('/');
+
+    }
+
 }

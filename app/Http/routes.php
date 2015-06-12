@@ -25,6 +25,7 @@ Route::get('diagnose/{id}', 'DiagnoseController@show');
 
 Route::get('symptom', 'SymptomController@index');
 Route::get('symptom/printout', 'SymptomController@printout');
+Route::get('symptom/refresh', 'SymptomController@refresh');
 
 Route::get('symptom/{id}', 'SymptomController@show');
 Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
