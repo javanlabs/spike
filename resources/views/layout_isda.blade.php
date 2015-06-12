@@ -19,9 +19,9 @@
         <button data-remodal-action="close" class="remodal-close"></button>
         <h3>Mulai Sesi Baru</h3>
         <div class="remodal-body">
-            <p style="text-align: center">Memulai assessment dari awal, data checlist yang telah dilakukan akan dibersihkan, Anda yakin?</p>
+            <p style="text-align: center">Memulai assessment dari awal, data checklist yang telah dilakukan akan dibersihkan, Anda yakin?</p>
         </div>
-        <button data-remodal-action="confirm" class="button">Batal</button>
         <a href="{{ url('symptom/refresh') }}" class="button button-primary">Ya, Mulai Baru</a>
+        <button data-remodal-action="confirm" class="button">Batal</button>
     </div>
 @endsection
