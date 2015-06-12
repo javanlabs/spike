@@ -33,10 +33,11 @@
             <div class="row">
                 @foreach($item as $key => $val)
                     <strong>{{ ucwords(str_replace('_', ' ', $key)) }}</strong><br/>
-                    @foreach($val as $check => $val)
-                        {{ $check }}<br/>
-                    @endforeach
-                    <br/>
+                    <ol>
+                        @foreach($val as $check => $val)
+                            <li>{{ $check }}</li>
+                        @endforeach
+                    </ol>
                 @endforeach
             </div>
             <hr/>
