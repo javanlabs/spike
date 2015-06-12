@@ -11,7 +11,10 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', function(){
+    return redirect()->to('symptom');
+});
+Route::get('home', 'HomeController@index');
 
 Route::get('diagnose', 'DiagnoseController@index');
 Route::get('diagnose/create', 'DiagnoseController@create');
@@ -21,11 +24,35 @@ Route::post('diagnose/{id}', 'DiagnoseController@update');
 Route::get('diagnose/{id}', 'DiagnoseController@show');
 
 Route::get('symptom', 'SymptomController@index');
+Route::get('symptom/printout', 'SymptomController@printout');
+Route::get('symptom/refresh', 'SymptomController@refresh');
+
 Route::get('symptom/{id}', 'SymptomController@show');
 Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 
+Route::post('assessment', 'SymptomController@assessment');
+
+Route::get('testcase', function(){
+    $diagnoses = \App\Models\Diagnose::whereNotNull('checklist')->get();
+
+    foreach($diagnoses as $diagnose)
+    {
+        foreach($diagnose->symptoms as $symptom)
+        {
+            $paths = $symptom->ancestorsAndSelf()->get();
+            foreach($paths as $path)
+            {
+                echo $path['name'] . '&#8594;';
+            }
+            echo $diagnose['name'];
+            echo '<hr>';
+        }
+    }
+});
+
 Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
 Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
+
 //
 //Route::controllers([
 //	'auth' => 'Auth\AuthController',

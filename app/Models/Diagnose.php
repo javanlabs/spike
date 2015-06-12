@@ -11,5 +11,8 @@ class Diagnose extends Model
     protected $hidden = array('pivot');
     protected $fillable = ['name', 'definition', 'checklist', 'content', 'page'];
 
-
+    public function symptoms()
+    {
+        return $this->belongsToMany('App\Models\Symptom', 'symptom_diagnose', 'diagnose_id', 'symptom_id');
+    }
 }

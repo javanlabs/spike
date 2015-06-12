@@ -1,6 +1,6 @@
-@extends('layout')
+@extends('layout_isda')
 
-@section('content')
+@section('content-isda')
     <div class="row">
         <h3>Symptom</h3>
         @foreach($hierarchy as $path)
@@ -10,7 +10,10 @@
 
         <hr/>
 
-        <h3>Kemungkinan Diagnosis <a class="button" href="#" data-remodal-target="modal-create">Tambah</a></h3>
+        <h3>
+            Kemungkinan Diagnosis
+            @if(\Illuminate\Support\Facades\Input::has('admin'))<a class="button" href="#" data-remodal-target="modal-create">Tambah</a>@endif
+        </h3>
         <form class="remodal" data-remodal-id="modal-create" action="{{ url('symptom/' . $item['id'] . '/diagnose') }}" method="post">
             {!! csrf_field() !!}
             <button data-remodal-action="close" class="remodal-close"></button>
@@ -25,27 +28,43 @@
 
         <table  class="u-full-width">
             <tbody class="list">
-            @foreach($diagnoses as $item)
+            @foreach($diagnoses as $diagnose)
                 <tr>
                     <td>
-                        <a href="{{ url('diagnose/' . $item['id']) }}" data-remodal-target="modal-{{ $item['id'] }}">
-                            {{ $item['name'] }}
+                        <a id="diagnose-{{$diagnose['id']}}" href="{{ url('diagnose/' . $diagnose['id']) }}" data-remodal-target="modal-{{ $diagnose['id'] }}">
+                            {{ $diagnose['name'] }}
                         </a>
-                        <form class="remodal" data-remodal-id="modal-{{ $item['id'] }}">
+
+                        @if($diagnose['page'])
+                        <small>(halaman {{ $diagnose['page'] }})</small>
+                        @endif
+
+                        @if(in_array($diagnose['id'], $appliedDiagnoses))
+                            <span class="diagnose-status diagnose-status-apply">Ditegakkan</span>
+                        @endif
+
+                        @if(in_array($diagnose['id'], $rejectedDiagnoses))
+                            <span class="diagnose-status diagnose-status-reject">Dianulir</span>
+                        @endif
+
+                        <form class="remodal form-assessment" data-remodal-id="modal-{{ $diagnose['id'] }}" action="{{ url('assessment') }}" method="post">
+                            {!! csrf_field() !!}
+                            {!! Form::hidden('diagnose_id', $diagnose['id']) !!}
+                            {!! Form::hidden('symptom_id', $item['id']) !!}
                             <button data-remodal-action="close" class="remodal-close"></button>
-                            <h3>{{ $item['name'] }}</h3>
+                            <h3>{{ $diagnose['name'] }}</h3>
                             <div class="remodal-body">
                                 <p>
                                     <strong>Definisi</strong>
-                                    {{ $item['definition'] }}
+                                    {{ $diagnose['definition'] }}
                                 </p>
                                 <p>
-                                    @include('symptom._checklist', ['checklist' => $item['checklist']])
+                                    @include('symptom._checklist', ['checklist' => $diagnose['checklist']])
                                 </p>
                             </div>
-                            <button data-remodal-action="confirm" class="button button-primary">Ditegakkan</button>
-                            <button data-remodal-action="confirm" class="button button-negative">Dianulir</button>
+                            <button type="submit" name="action" value="apply" class="button button-primary">Ditegakkan</button>
                             <button data-remodal-action="confirm" class="button">Perlu Pengkajian Lebih Lanjut</button>
+                            <button type="submit" name="action" value="reject" class="button button-negative">Dianulir</button>
                         </form>
                     </td>
                 </tr>
@@ -54,4 +73,15 @@
         </table>
         <a class="button" href="{{ url('symptom') }}">Lanjut Pengkajian Lainnya &raquo;</a>
     </div>
+
+    <script>
+        $(function(){
+            var elem = $('#' + window.location.hash.replace('#', ''));
+            if(elem) {
+                $('html, body').animate({
+                    scrollTop: elem.offset().top - 100
+                }, 300);
+            }
+        });
+    </script>
 @endsection

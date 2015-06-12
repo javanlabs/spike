@@ -40,9 +40,7 @@
 
 <!-- Primary Page Layout
 –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-<div class="container">
-    @yield('content')
-</div>
+@yield('content')
 
 
 <!-- End Document
