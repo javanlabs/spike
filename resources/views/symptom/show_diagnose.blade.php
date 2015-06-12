@@ -10,7 +10,10 @@
 
         <hr/>
 
-        <h3>Kemungkinan Diagnosis <a class="button" href="#" data-remodal-target="modal-create">Tambah</a></h3>
+        <h3>
+            Kemungkinan Diagnosis
+            @if(\Illuminate\Support\Facades\Input::has('admin'))<a class="button" href="#" data-remodal-target="modal-create">Tambah</a>@endif
+        </h3>
         <form class="remodal" data-remodal-id="modal-create" action="{{ url('symptom/' . $item['id'] . '/diagnose') }}" method="post">
             {!! csrf_field() !!}
             <button data-remodal-action="close" class="remodal-close"></button>
