@@ -11,7 +11,10 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', function(){
+    return redirect()->to('symptom');
+});
+Route::get('home', 'HomeController@index');
 
 Route::get('diagnose', 'DiagnoseController@index');
 Route::get('diagnose/create', 'DiagnoseController@create');
@@ -21,6 +24,8 @@ Route::post('diagnose/{id}', 'DiagnoseController@update');
 Route::get('diagnose/{id}', 'DiagnoseController@show');
 
 Route::get('symptom', 'SymptomController@index');
+Route::get('symptom/printout', 'SymptomController@printout');
+
 Route::get('symptom/{id}', 'SymptomController@show');
 Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 

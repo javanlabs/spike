@@ -1,6 +1,6 @@
-@extends('layout')
+@extends('layout_isda')
 
-@section('content')
+@section('content-isda')
     <div class="row">
         <h1>ISDA</h1>
 

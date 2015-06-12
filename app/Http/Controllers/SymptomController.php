@@ -60,7 +60,7 @@ class SymptomController extends Controller
             $diagnoses = $item->diagnoses;
             $availableDiagnoses = Diagnose::lists('name', 'id');
 
-            $assessment = $request->session()->get('assessment');
+            $assessment = $request->session()->get('assessment', []);
             $appliedDiagnoses = $rejectedDiagnoses = [];
             foreach($assessment as $ass)
             {
@@ -126,5 +126,12 @@ class SymptomController extends Controller
     {
         $request->session()->push('assessment', $request->except('_token'));
         return redirect()->to('symptom/' . $request->get('symptom_id') . '#diagnose-' . $request->get('diagnose_id'));
+    }
+
+    public function printout(Request $request)
+    {
+        $assessment = $request->session()->get('assessment', []);
+
+        return view('symptom.printout', compact('assessment'));
     }
 }

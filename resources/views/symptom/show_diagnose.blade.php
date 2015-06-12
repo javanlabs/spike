@@ -1,6 +1,6 @@
-@extends('layout')
+@extends('layout_isda')
 
-@section('content')
+@section('content-isda')
     <div class="row">
         <h3>Symptom</h3>
         @foreach($hierarchy as $path)
