@@ -150,6 +150,7 @@ return [
          */
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Collective\Html\HtmlServiceProvider',
+        'Chumper\Zipper\ZipperServiceProvider'
 
     ],
 
@@ -202,6 +203,7 @@ return [
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Form'  => 'Collective\Html\FormFacade',
         'Html'  => 'Collective\Html\HtmlFacade',
+        'Zipper' => 'Chumper\Zipper\Zipper'
 	],
 
 ];

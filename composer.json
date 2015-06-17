@@ -9,7 +9,8 @@
         "maatwebsite/excel": "~2.0.0",
         "baum/baum": "~1.1",
         "doctrine/dbal": "~2.3",
-        "laravelcollective/html": "~5.0"
+        "laravelcollective/html": "~5.0",
+        "Chumper/Zipper": "0.6.x"
     },
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",

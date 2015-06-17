@@ -34,6 +34,22 @@ class ApiMobileController extends Controller{
         return \Response::json($result);
     }
 
+    public function getDbVersion(){
+
+        $version = json_decode(json_encode(\DB::table("version")->select("version", "modified","note")->get()),true);
+
+        return \Response::json($version[0]);
+    }
+
+    public function getDbFile(){
+
+        $file= public_path(). "/download/db/nanda.zip";
+        $headers = array(
+            'Content-Type: application/zip',
+        );
+        return \Response::download($file, 'nanda.zip', $headers);
+    }
+
     public function getDiagnosesList($id){
         $result = Symptom::with(["diagnoses" => function($query){
             $query->select("id", "name");
