@@ -86,6 +86,13 @@ class SymptomImporter extends Command
         foreach(Symptom::allLeaves()->get() as $node)
         {
             $diagnoseName = $node['name'];
+            $page = $this->getPage($node['name']);
+            if($page)
+            {
+                // remove (page) string
+                $diagnoseName = str_replace("($page)", "", $diagnoseName);
+            }
+
             if(in_array(trim($diagnoseName), ['', '-']))
             {
                 continue;
@@ -96,7 +103,12 @@ class SymptomImporter extends Command
             $diagnose = Diagnose::whereName($diagnoseName)->first();
             if(!$diagnose)
             {
-                $diagnose = Diagnose::create(['name' => $diagnoseName]);
+                $diagnose = Diagnose::create(['name' => $diagnoseName, 'page' => $page]);
+            }
+            else
+            {
+                $diagnose->page = $page;
+                $diagnose->save();
             }
 
             $parent = $node->parent()->first();
@@ -136,5 +148,11 @@ class SymptomImporter extends Command
         $this->container[$columnNumber] = $node;
 
         //$this->info($text . ' ' . $columnNumber);
+    }
+
+    protected function getPage($text)
+    {
+        preg_match_all('/\(([A-Za-z0-9 ]+?)\)/', $text, $out);
+        return array_pop($out[1]);
     }
 }
