@@ -128,9 +128,12 @@ class UpdateSQLite extends Command {
         if(file_exists($this->zipFilename)){
             unlink($this->zipFilename);
         }
-        \Zipper::make('public/download/db/nanda.zip')->add($this->filename);
+        $zip = new Zipper();
+        $zip->make($this->zipFilename)->add($this->filename);
         $this->info('Zipping file ' . "done!");
+        $zip->close();
     }
+
     private function cleanTable($db){
         $db->exec("drop table if exists spike_path");
         $db->exec("drop table if exists spike_path_diagnose");
