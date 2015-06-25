@@ -54,7 +54,7 @@ Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
 Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
 Route::get('api/update', 'ApiMobileController@getDbVersion');
 Route::get('api/update/db/nanda.zip', 'ApiMobileController@getDbFile');
-
+Route::get('help','HomeController@helpPage');
 //
 //Route::controllers([
 //	'auth' => 'Auth\AuthController',
