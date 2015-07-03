@@ -2,6 +2,7 @@
 use App\Models\Diagnose;
 use App\Models\Symptom;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -59,6 +60,27 @@ class ApiMobileController extends Controller{
         }*/
 
         return \Response::json($result[0]->diagnoses);
+    }
+
+    public function getTrial($email){
+        $decoded = urldecode($email);
+        $rules = array('email' => 'required|email');
+      $validator = Validator::make(['email' => $decoded], $rules);
+
+      if($validator->fails()){
+        return \Response::json(['status'=> 'not legit']);
+      }
+
+      $check = json_decode(json_encode(\DB::table("trial")->select("email", "start","end")->where("email", "=", $decoded)->first()),true);
+      if(count($check) == 3 && $check['email'] == $decoded){
+        return \Response::json(['status'=>"claimed", "start" => $check['start'], "end" => $check['end']]);
+      }else{
+        $end = date('Y-m-d H:i:s', strtotime("+15 days"));
+          $start = date('Y-m-d H:i:s');
+        \DB::insert("insert into trial (email, start, end) values ('".$decoded."','".$start."','".$end."')");
+        return \Response::json(['status'=> 'legit', "start" => $start, 'end' => $end]);
+      }
+
     }
 
 }
