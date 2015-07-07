@@ -54,7 +54,7 @@ class UpdateSQLite extends Command {
         $this->cleanTable($db);
         $spike_path = 'CREATE TABLE "spike_path" ("id" INTEGER PRIMARY KEY  NOT NULL ,"name" VARCHAR,"parent" INTEGER,"left" INTEGER,"right" INTEGER,"level" INTEGER);';
 
-        $spike_diagnoses = 'CREATE TABLE "spike_diagnose" ("id" INTEGER PRIMARY KEY  NOT NULL ,"page" VARCHAR,"name" VARCHAR,"content" TEXT);';
+        $spike_diagnoses = 'CREATE TABLE "spike_diagnose" ("id" INTEGER PRIMARY KEY  NOT NULL ,"page" VARCHAR, "code" VARCHAR,"name" VARCHAR,"content" TEXT);';
 
         $spike_path_diagnoses = 'CREATE TABLE "spike_path_diagnose" ("path_id" INTEGER,"diagnoses_id" INTEGER DEFAULT (null) );';
         $spike_version = 'CREATE TABLE "version" ("id" INTEGER PRIMARY KEY  NOT NULL , "version" INTEGER DEFAULT (null), "modified" TEXT );';
@@ -75,14 +75,14 @@ class UpdateSQLite extends Command {
             $id = $k['id'];
             $page = $k["page"];
             $name = $k["name"];
+            $code = $k["code"];
             $content = $k["content"];
-            $db->exec("insert into spike_diagnose (id, page, name, content) values ('".$id."','".$page."','".$db->escapeString($name)."','".$db->escapeString($content)."')");
+            $db->exec("insert into spike_diagnose (id, page, code, name, content) values ('".$id."','".$page."','".$code."','".$db->escapeString($name)."','".$db->escapeString($content)."')");
         }
         $db->exec("END TRANSACTION");
         $db->close();
         $this->info('Processing diagnose ' . "insert done");
     }
-
 
     private function insertPathDiagnoses($array){
         $this->info('Processing path diagnose ' . "insert symptom_diagnose");

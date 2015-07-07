@@ -52,9 +52,9 @@ Route::get('testcase', function(){
 
 Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
 Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
-Route::get('api/update', 'ApiMobileController@getDbVersion');
+Route::get('api/update/{version}', 'ApiMobileController@getDbVersion');
 Route::get('api/trial/{email}', 'ApiMobileController@getTrial');
-Route::get('api/update/db/nanda.zip', 'ApiMobileController@getDbFile');
+Route::get('api/update/db/{version}/nanda.zip', 'ApiMobileController@getDbFile');
 Route::get('help','HomeController@helpPage');
 //
 //Route::controllers([

@@ -63,18 +63,20 @@ class SymptomImporter extends Command
         Excel::load($file, function($reader){
 
             $sheets = $reader->all();
+            $i = 0;
             foreach($sheets as $sheet)
             {
-                $this->info('Processing sheet ' . $sheet->getTitle());
+             //   $i++;
+             //  if($i <= 2) {
+                   $this->info('Processing sheet ' . $sheet->getTitle());
 
 
-                foreach($sheet as $row)
-                {
-                    foreach($row as $columnNumber => $cell)
-                    {
-                        $this->parseCell($cell, $columnNumber);
-                    }
-                }
+                   foreach ($sheet as $row) {
+                       foreach ($row as $columnNumber => $cell) {
+                           $this->parseCell($cell, $columnNumber);
+                       }
+                   }
+             //  }
             }
         });
 
@@ -85,29 +87,31 @@ class SymptomImporter extends Command
         Diagnose::unguard();
         foreach(Symptom::allLeaves()->get() as $node)
         {
-            $diagnoseName = $node['name'];
+            $diagnoseName = $this->getClearName($node['name']);
             $page = $this->getPage($node['name']);
-            if($page)
+            $code = $this->getCode($node['name']);
+           /* if($page || $code)
             {
                 // remove (page) string
-                $diagnoseName = str_replace("($page)", "", $diagnoseName);
+                $diagnoseName = $this->getClearName($node['name']);
             }
 
             if(in_array(trim($diagnoseName), ['', '-']))
             {
                 continue;
-            }
+            }*/
 
             //$this->info($diagnoseName);
 
             $diagnose = Diagnose::whereName($diagnoseName)->first();
             if(!$diagnose)
             {
-                $diagnose = Diagnose::create(['name' => $diagnoseName, 'page' => $page]);
+                $diagnose = Diagnose::create(['name' => $diagnoseName, 'page' => $page, 'code' => $code]);
             }
             else
             {
                 $diagnose->page = $page;
+                $diagnose->code = $code;
                 $diagnose->save();
             }
 
@@ -150,9 +154,48 @@ class SymptomImporter extends Command
         //$this->info($text . ' ' . $columnNumber);
     }
 
-    protected function getPage($text)
+    /*
+     Readiness for enhanced resilience (Kesiapan meningkatkan penyesuaian) Code: 00212, halaman 483
+    Risk for sudden infant death syndrome (555)
+      */
+
+      protected function getPage($text)
     {
-        preg_match_all('/\(([A-Za-z0-9 ]+?)\)/', $text, $out);
-        return array_pop($out[1]);
+        if(preg_match_all('/[a-zA-Z]+\s[0-9]+\w/', $text, $outPageWithOut)){
+            $page = preg_replace('/[a-zA-Z\s]+/', '', $outPageWithOut[0]);
+            return $page[0];
+        } if(preg_match_all('/[(][0-9]+[)]/', $text, $outPageWith)){
+            $page = preg_replace('/[()]+/', '', $outPageWith[0]);
+            return $page[0];
+        }
+            return "0";
     }
+
+    protected function getCode($source){
+        preg_match_all('/[Ccode:]+\s[0-9]+\w/', $source, $outCode);
+        $code = preg_replace('/[a-zA-Z:\s]+/', '', array_pop($outCode));
+        $newCode = isset($code[0]) ? $code[0] : "0";
+        $refactor = $newCode;
+        $length = strlen($newCode);
+        if($length < 5 && $refactor != "0"){
+            $zero = "";
+            for($i = 0; $i < (5 -$length); $i++){
+                $zero .= "0";
+            }
+            $refactor = $zero.$newCode;
+        }
+        return $refactor;
+    }
+
+    protected function getClearName($source){
+        if(preg_match('/[(][0-9]+[)]/', $source, $with)){
+            return substr($source, 0, strpos($source, " ".array_pop($with)));
+        }
+        if(preg_match('/[Ccode:]+\s[0-9]+\w/', $source, $code) ||
+            preg_match('/[a-zA-Z]+\s[0-9]+\w/', $source, $without)){
+            return substr($source, 0, strpos($source, " ".((isset($code[0]) ? $code[0] : $without[0]))));
+        }
+        return $source;
+    }
+
 }

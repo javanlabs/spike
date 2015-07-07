@@ -35,20 +35,24 @@ class ApiMobileController extends Controller{
         return \Response::json($result);
     }
 
-    public function getDbVersion(){
+    public function getDbVersion($version){
 
-        $version = json_decode(json_encode(\DB::table("version")->select("version", "modified","note")->get()),true);
+        $versionData = json_decode(json_encode(\DB::table("version")->select("version", "modified","note")->get()),true);
 
-        return \Response::json($version[0]);
+        return \Response::json($versionData[0]);
     }
 
-    public function getDbFile(){
+    public function getDbFile($version){
 
         $file= public_path(). "/download/db/nanda.zip";
         $headers = array(
             'Content-Type: application/zip',
         );
+        if($version){
+
+        }
         return \Response::download($file, 'nanda.zip', $headers);
+
     }
 
     public function getDiagnosesList($id){
@@ -82,5 +86,8 @@ class ApiMobileController extends Controller{
       }
 
     }
+
+
+
 
 }
