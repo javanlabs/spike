@@ -95,11 +95,11 @@ class SymptomImporter extends Command
                 // remove (page) string
                 $diagnoseName = $this->getClearName($node['name']);
             }
-
+*/
             if(in_array(trim($diagnoseName), ['', '-']))
             {
                 continue;
-            }*/
+            }
 
             //$this->info($diagnoseName);
 
