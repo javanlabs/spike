@@ -150,7 +150,8 @@ return [
          */
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Collective\Html\HtmlServiceProvider',
-        'Chumper\Zipper\ZipperServiceProvider'
+        'Chumper\Zipper\ZipperServiceProvider'/*,
+        'Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider'*/
 
     ],
 
@@ -203,7 +204,8 @@ return [
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Form'  => 'Collective\Html\FormFacade',
         'Html'  => 'Collective\Html\HtmlFacade',
-        'Zipper' => 'Chumper\Zipper\Zipper'
+        'Zipper' => 'Chumper\Zipper\Zipper'/*,
+        'LaravelLocalization'   => 'Mcamara\LaravelLocalization\Facades\LaravelLocalization'*/
 	],
 
 ];

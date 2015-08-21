@@ -55,6 +55,8 @@ Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
 Route::get('api/update/{version}', 'ApiMobileController@getDbVersion');
 Route::get('api/trial/{email}', 'ApiMobileController@getTrial');
 Route::get('api/update/db/{version}/nanda.zip', 'ApiMobileController@getDbFile');
+Route::post('api/verification', 'ApiMobileController@verification');
+Route::post('api/payload', 'ApiMobileController@getPayload');
 Route::get('help','HomeController@helpPage');
 //
 //Route::controllers([

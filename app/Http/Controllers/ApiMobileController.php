@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 use App\Models\Diagnose;
 use App\Models\Symptom;
+use Carbon\Carbon;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,7 +18,6 @@ class ApiMobileController extends Controller{
     private $symptom;
     private $error = ['code' => 404, 'message' => "resource not found"];
     public function __construct(){
-
     }
 
     public function getSymptoms($id = 0){
@@ -28,9 +28,6 @@ class ApiMobileController extends Controller{
             $query->where("parent_id", "=", $id);
         }
        $result = $query->get();
-       /* if(count($result) == 0){
-            $result = $this->error;
-        }*/
 
         return \Response::json($result);
     }
@@ -44,7 +41,7 @@ class ApiMobileController extends Controller{
 
     public function getDbFile($version){
 
-        $file= public_path(). "/download/db/nanda.zip";
+        $file= storage_path("db/nanda.zip");
         $headers = array(
             'Content-Type: application/zip',
         );
@@ -79,15 +76,66 @@ class ApiMobileController extends Controller{
       if(count($check) == 3 && $check['email'] == $decoded){
         return \Response::json(['status'=>"claimed", "start" => $check['start'], "end" => $check['end']]);
       }else{
-        $end = date('Y-m-d H:i:s', strtotime("+15 days"));
-          $start = date('Y-m-d H:i:s');
-        \DB::insert("insert into trial (email, start, end) values ('".$decoded."','".$start."','".$end."')");
-        return \Response::json(['status'=> 'legit', "start" => $start, 'end' => $end]);
-      }
+          $start = Carbon::now();
+          $end = $start->copy()->addDays(30);
 
+          \DB::insert("insert into trial (email, start, end) values ('".$decoded."','".$start."','".$end."')");
+        return \Response::json(['status'=> 'legit',
+            "start" => Carbon::parse($start)->toDateTimeString(),
+            'end' => Carbon::parse($end)->toDateTimeString()]);
+      }
     }
 
+    public function getPayload(){
+        $email = \Request::input("email");
+        $rules = ['email' => 'required|email'];
+        $validation = \Validator::make(['email' => $email], $rules);
+        if(!$validation->fails()) {
+            $pay = json_decode(json_encode(\DB::select("select UUID();")), true);
+            $payload = array_pop($pay)['UUID()'];
+            $created = $this->getNow();
+            \DB::insert("insert into playstore_payload (email, payload, created) values ('" . $email . "','" . $payload . "','" . $created . "');");
+            return \Response::json(['status' => '1', 'payload' => $payload]);
+        }else{
+            return \Response::json(['status' => '0', 'payload' => 'none']);
+        }
+    }
 
+    public function Verification(){
+        $signature = \Request::input('sign');
+        $public_key_base64 = '';
+        $signed_data = \Request::input('signed_data');
+        $key =	"-----BEGIN PUBLIC KEY-----\n".
+            chunk_split($public_key_base64, 64,"\n").
+            '-----END PUBLIC KEY-----';
+        $key = openssl_get_publickey($key);
+        $signature = base64_decode($signature);
+        $result = openssl_verify(
+            $signed_data,
+            $signature,
+            $key,
+            OPENSSL_ALGO_SHA1);
+        if (0 === $result)
+        {
+            //return false;
+            $this->ResponseJson('not allow', false);
+        }
+        else if (1 !== $result)
+        {
+            //return false;
+            $this->ResponseJson('not allow', false);
+        }
+        else
+        {
+          //  return true;
+            return $this->ResponseJson('allow', true);
+        }
+    }
 
-
+    private function ResponseJson($allow, $status){
+        return \Response::json(['result' => $allow,'status' => $status, 'email' => 'email']);
+    }
+    private function getNow(){
+        return Carbon::parse(Carbon::now())->toDateTimeString();
+    }
 }
