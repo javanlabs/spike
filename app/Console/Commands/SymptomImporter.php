@@ -55,6 +55,13 @@ class SymptomImporter extends Command
      */
     public function handle()
     {
+        // Cleaning
+        $this->info('Start Processing' . 'Cleaning Tables');
+        DB::table('symptom')->truncate();
+        //DB::table('diagnose')->truncate();
+        DB::table('symptom_diagnose')->truncate();
+
+
         $files = ['raw/isda.xlsx','raw/en-isda.xlsx'];
         for($k = 0; $k < count($files); $k++) {
             $this->info('Processing sheet ' . $files[$k]);
@@ -62,9 +69,6 @@ class SymptomImporter extends Command
                 $this->language = 'en';
             } else {
                 $this->language = 'id';
-                DB::table('symptom')->truncate();
-                //DB::table('diagnose')->truncate();
-                DB::table('symptom_diagnose')->truncate();
             }
 
             $file = storage_path($files[$k]);
