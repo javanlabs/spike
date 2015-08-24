@@ -12,9 +12,21 @@ class VerifyCsrfToken extends BaseVerifier {
 	 * @param  \Closure  $next
 	 * @return mixed
 	 */
-	public function handle($request, Closure $next)
-	{
-		return parent::handle($request, $next);
-	}
+
+//modify this function
+    public function handle($request, Closure $next)
+    {
+        // Add this:
+        if($request->method() == 'POST')
+        {
+            return $next($request);
+        }
+
+        if ($request->method() == 'GET' || $this->tokensMatch($request))
+        {
+            return $next($request);
+        }
+        throw new TokenMismatchException;
+    }
 
 }

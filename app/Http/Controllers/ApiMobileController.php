@@ -106,7 +106,7 @@ class ApiMobileController extends Controller{
         $email = \Request::input('email');
         $signed_data = html_entity_decode(\Request::input('signed_data'));
 
-        // base 64 key 
+        // base 64 key
         $public_key_base64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiI5djt4rB2ihWPR9p7XSI3QtLVbu+6AO5zfQUvmSo3PaM2lqP5d0LZWifsj1P/6AMnkBbCqpgS+SQCIe985qwLIdJ4rd/CFQMPbxofFGMrGNaMAO64O/WnPQGixAiePCgCnWdduzh3OFvOGdjSkj1eLAqChMk2hHNQx9xZVmiq2/pfGdUZ9DpX1iqwMc2T/S/q6lTbnzQoZ5XkaeG4sNfL5HvvuOYJ0kOO06+9vKnzUebe+WtFkNOEA+k87GIdZAMkIe1u0Wy4w+4DC9iSMtyfqXHmDXySpP03fxVvBlhuTat8EWJ19aGNEKUTbv7x16ridyTobqJOJNMidxUvhERwIDAQAB";
 
         $data = json_decode($signed_data, true);
