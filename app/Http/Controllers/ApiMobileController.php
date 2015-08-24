@@ -138,4 +138,13 @@ class ApiMobileController extends Controller{
     private function getNow(){
         return Carbon::parse(Carbon::now())->toDateTimeString();
     }
+
+    public function getEmailReport(){
+        $file= storage_path("exports/data.xls");
+        $headers = array(
+            'Content-Type: application/vnd.ms-excel',
+        );
+        return \Response::download($file, 'data.xls', $headers);
+    }
+
 }

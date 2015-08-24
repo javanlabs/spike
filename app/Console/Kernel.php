@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel {
 	protected $commands = [
 		'App\Console\Commands\Inspire',
 		'App\Console\Commands\SymptomImporter',
-        'App\Console\Commands\UpdateSQLite'
+        'App\Console\Commands\UpdateSQLite',
+        'App\Console\Commands\EmailAddressExcel'
 	];
 
 	/**
