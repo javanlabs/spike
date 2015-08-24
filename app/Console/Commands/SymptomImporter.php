@@ -62,6 +62,9 @@ class SymptomImporter extends Command
                 $this->language = 'en';
             } else {
                 $this->language = 'id';
+                DB::table('symptom')->truncate();
+                //DB::table('diagnose')->truncate();
+                DB::table('symptom_diagnose')->truncate();
             }
 
             $file = storage_path($files[$k]);
@@ -70,10 +73,6 @@ class SymptomImporter extends Command
                 $this->error('File ' . $file . ' not found');
                 return false;
             }
-
-                DB::table('symptom')->truncate();
-                //DB::table('diagnose')->truncate();
-                DB::table('symptom_diagnose')->truncate();
 
             Excel::load($file, function ($reader) {
 
