@@ -13,10 +13,22 @@ class VerifyCsrfToken extends BaseVerifier {
 	 * @return mixed
 	 */
 
-//modify this function
+    private $openRoutes = ['api/payload', 'api/verification'];
+
     public function handle($request, Closure $next)
     {
-        // Add this:
+        foreach($this->openRoutes as $route) {
+
+            if ($request->is($route)) {
+                return $next($request);
+            }
+        }
+
+        return parent::handle($request, $next);
+    }
+
+  /*  public function handle($request, Closure $next)
+    {
         if($request->method() == 'POST')
         {
             return $next($request);
@@ -27,6 +39,6 @@ class VerifyCsrfToken extends BaseVerifier {
             return $next($request);
         }
         throw new TokenMismatchException;
-    }
+    }*/
 
 }
