@@ -50,14 +50,19 @@ Route::get('testcase', function(){
     }
 });
 
-Route::get('api/diagnose/{id}','ApiMobileController@getDiagnosesList');
-Route::get('api/symptom/{id?}', 'ApiMobileController@getSymptoms');
-Route::get('api/update/{version}', 'ApiMobileController@getDbVersion');
-Route::get('api/trial/{email}', 'ApiMobileController@getTrial');
+Route::group(['prefix' => 'api'], function () {
+    Route::get('diagnose/{id}','ApiMobileController@getDiagnosesList');
+    Route::get('symptom/{id?}', 'ApiMobileController@getSymptoms');
+    Route::get('update/{version}', 'ApiMobileController@getDbVersion');
+    Route::get('trial/{email}', 'ApiMobileController@getTrial');
+
+    Route::get('update/db/{version}/nanda.zip', 'ApiMobileController@getDbFile');
+    Route::post('verification', 'ApiMobileController@getVerification');
+    Route::post('payload', 'ApiMobileController@getPayload');
+});
+
+
 Route::get('report/export/xls', 'ApiMobileController@getEmailReport');
-Route::get('api/update/db/{version}/nanda.zip', 'ApiMobileController@getDbFile');
-Route::post('api/verification', 'ApiMobileController@Verification');
-Route::post('api/payload', 'ApiMobileController@getPayload');
 Route::get('help','HomeController@helpPage');
 //
 //Route::controllers([

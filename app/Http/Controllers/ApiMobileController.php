@@ -15,9 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ApiMobileController extends Controller{
 
-    private $symptom;
-    private $error = ['code' => 404, 'message' => "resource not found"];
     public function __construct(){
+
     }
 
     public function getSymptoms($id = 0){
@@ -101,49 +100,40 @@ class ApiMobileController extends Controller{
         }
     }
 
-    public function Verification(){
+    public function getVerification(){
         $signature = \Request::input('sign');
         $email = \Request::input('email');
         $signed_data = html_entity_decode(\Request::input('signed_data'));
 
         // base 64 key
-        $public_key_base64 = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiI5djt4rB2ihWPR9p7XSI3QtLVbu+6AO5zfQUvmSo3PaM2lqP5d0LZWifsj1P/6AMnkBbCqpgS+SQCIe985qwLIdJ4rd/CFQMPbxofFGMrGNaMAO64O/WnPQGixAiePCgCnWdduzh3OFvOGdjSkj1eLAqChMk2hHNQx9xZVmiq2/pfGdUZ9DpX1iqwMc2T/S/q6lTbnzQoZ5XkaeG4sNfL5HvvuOYJ0kOO06+9vKnzUebe+WtFkNOEA+k87GIdZAMkIe1u0Wy4w+4DC9iSMtyfqXHmDXySpP03fxVvBlhuTat8EWJ19aGNEKUTbv7x16ridyTobqJOJNMidxUvhERwIDAQAB";
+        $public_key_base64 = \Config::get('playstore.public_key');
 
         $data = json_decode($signed_data, true);
         $data['email'] = $email;
         $data['signature'] = $signature;
-        $key =	"-----BEGIN PUBLIC KEY-----\n". chunk_split($public_key_base64, 64,"\n").'-----END PUBLIC KEY-----';
-        $key = openssl_get_publickey($key);
-        $signature = base64_decode($signature);
-        $result = openssl_verify(
-            $signed_data,
-            $signature,
-            $key,
-            OPENSSL_ALGO_SHA1);
-        $this->insertOrder($data, $result);
-        if (0 === $result)
-        {
-            //return false;
-            $this->ResponseJson('not allow', false);
-        }
-        else if (1 !== $result)
-        {
-            //return false;
-            $this->ResponseJson('not allow', false);
-        }
-        else
-        {
-          //  return true;
-            if($this->checkingPayload($data)){
-                return $this->ResponseJson('allow', true);
+        try{
+            $key =	"-----BEGIN PUBLIC KEY-----\n". chunk_split($public_key_base64, 64,"\n").'-----END PUBLIC KEY-----';
+            $key = openssl_get_publickey($key);
+            $signature = base64_decode($signature);
+            $result = openssl_verify(
+                $signed_data,
+                $signature,
+                $key,
+                OPENSSL_ALGO_SHA1);;
+            $this->insertOrder($data, $result);
+            if($result == 1 && $this->checkingPayload($data) && $this->checkProduct($data)) {
+                return \Response::json(['result' => 'allow','status' => true]);
             }else{
-                return $this->ResponseJson('not allow', false);
+                return \Response::json(['result' => 'not allow','status' => false]);
             }
+        }catch (\Exception $e){
+           echo $e->getMessage();
         }
+
     }
 
     private function insertOrder($data, $status){
-        $oderId = $data['orderId'];
+        $orderId = $data['orderId'];
         $productId = $data['productId'];
         $packageName = $data['packageName'];
         $purchaseTime = $data['purchaseTime'];
@@ -152,15 +142,23 @@ class ApiMobileController extends Controller{
         $purchaseState = $data['purchaseState'];
         $signature = $data['signature'];
         $created = $this->getNow();
-        $userId = $data['userId'];
+        $email = $data['email'];
 
-        \DB::insert("insert into playstore_order (user_id, order_id, signature, product_id, purchase_time, package_name, payload, token, created, purchase_state, status)
-values ('".$userId."','".$oderId."','".$signature."','".$productId."','".$purchaseTime."','".$packageName."','".$developerPayload."','".$purchaseToken."','".$created."','".$purchaseState."','".$status."');");
+        \DB::insert("insert into playstore_order (email, order_id, signature, product_id, purchase_time, package_name, payload, token, created, purchase_state, status)
+values ('".$email."','".$orderId."','".$signature."','".$productId."','".$purchaseTime."','".$packageName."','".$developerPayload."','".$purchaseToken."','".$created."','".$purchaseState."','".$status."');");
     }
 
-    private function ResponseJson($allow, $status){
-        return \Response::json(['result' => $allow,'status' => $status]);
+    private function checkProduct($data){
+        $product_id = \Config::get('playstore.productId');
+        $status = false;
+        foreach($product_id as $item){
+            if($item == $data['productId']){
+                $status = true;
+            }
+        }
+        return $status;
     }
+
     private function getNow(){
         return Carbon::parse(Carbon::now())->toDateTimeString();
     }
@@ -178,7 +176,7 @@ values ('".$userId."','".$oderId."','".$signature."','".$productId."','".$purcha
         $pay = json_decode(json_encode(\DB::select("select id, payload from playstore_payload where payload = '".$payload."' and status = '0';")), true);
         if(count($pay) == 1){
             if(array_pop($pay)['payload'] == $payload){
-                \DB::update("update playstore_payload set status = '1' where payload = '".$payload."'");
+                \DB::update("update playstore_payload set status = '1', modified = '".$this->getNow()."' where payload = '".$payload."'");
                 return true;
             }else{
                 return false;
