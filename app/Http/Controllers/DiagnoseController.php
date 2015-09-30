@@ -18,7 +18,7 @@ class DiagnoseController extends Controller
      */
     public function index()
     {
-        $items = Diagnose::all();
+        $items = Diagnose::whereLanguage(config('app.locale'))->all();
         return view('diagnose.index', compact('items'));
     }
 

@@ -13,6 +13,6 @@ class Diagnose extends Model
 
     public function symptoms()
     {
-        return $this->belongsToMany('App\Models\Symptom', 'symptom_diagnose', 'diagnose_id', 'symptom_id');
+        return $this->belongsToMany('App\Models\Symptom', 'symptom_diagnose', 'diagnose_id', 'symptom_id')->whereLanguage(config('app.locale'));
     }
 }

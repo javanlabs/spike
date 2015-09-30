@@ -42,7 +42,7 @@ class SymptomController extends Controller
      */
     public function index()
     {
-        $items = Symptom::roots()->get();
+        $items = Symptom::roots()->whereLanguage(config('app.locale'))->get();
         return view('symptom.index', compact('items'));
     }
 
