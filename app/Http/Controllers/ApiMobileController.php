@@ -62,8 +62,8 @@ class ApiMobileController extends Controller{
         return \Response::json($result[0]->diagnoses);
     }
 
-    public function getTrial($email){
-        $decoded = urldecode($email);
+    public function getTrial(){
+        $decoded = \Input::get('email');
         $rules = array('email' => 'required|email');
       $validator = Validator::make(['email' => $decoded], $rules);
 

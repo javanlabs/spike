@@ -11,50 +11,56 @@
 |
 */
 
-Route::get('/', function(){
-    return redirect()->to('symptom');
-});
-Route::get('home', 'HomeController@index');
 
-Route::get('diagnose', 'DiagnoseController@index');
-Route::get('diagnose/create', 'DiagnoseController@create');
-Route::post('diagnose', 'DiagnoseController@store');
-Route::get('diagnose/edit/{id}', 'DiagnoseController@edit');
-Route::post('diagnose/{id}', 'DiagnoseController@update');
-Route::get('diagnose/{id}', 'DiagnoseController@show');
+Route::group(['prefix' => \LaravelLocalization::setLocale()], function()
+{
 
-Route::get('symptom', 'SymptomController@index');
-Route::get('symptom/printout', 'SymptomController@printout');
-Route::get('symptom/refresh', 'SymptomController@refresh');
+    Route::get('/', function(){
+        return redirect()->to('symptom');
+    });
+    Route::get('home', 'HomeController@index');
 
-Route::get('symptom/{id}', 'SymptomController@show');
-Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
+    Route::get('diagnose', 'DiagnoseController@index');
+    Route::get('diagnose/create', 'DiagnoseController@create');
+    Route::post('diagnose', 'DiagnoseController@store');
+    Route::get('diagnose/edit/{id}', 'DiagnoseController@edit');
+    Route::post('diagnose/{id}', 'DiagnoseController@update');
+    Route::get('diagnose/{id}', 'DiagnoseController@show');
 
-Route::post('assessment', 'SymptomController@assessment');
+    Route::get('symptom', 'SymptomController@index');
+    Route::get('symptom/printout', 'SymptomController@printout');
+    Route::get('symptom/refresh', 'SymptomController@refresh');
 
-Route::get('testcase', function(){
-    $diagnoses = \App\Models\Diagnose::whereNotNull('checklist')->get();
+    Route::get('symptom/{id}', 'SymptomController@show');
+    Route::post('symptom/{id}/diagnose', 'SymptomController@addDiagnose');
 
-    foreach($diagnoses as $diagnose)
-    {
-        foreach($diagnose->symptoms as $symptom)
+    Route::post('assessment', 'SymptomController@assessment');
+
+    Route::get('testcase', function(){
+        $diagnoses = \App\Models\Diagnose::whereNotNull('checklist')->get();
+
+        foreach($diagnoses as $diagnose)
         {
-            $paths = $symptom->ancestorsAndSelf()->get();
-            foreach($paths as $path)
+            foreach($diagnose->symptoms as $symptom)
             {
-                echo $path['name'] . '&#8594;';
+                $paths = $symptom->ancestorsAndSelf()->get();
+                foreach($paths as $path)
+                {
+                    echo $path['name'] . '&#8594;';
+                }
+                echo $diagnose['name'];
+                echo '<hr>';
             }
-            echo $diagnose['name'];
-            echo '<hr>';
         }
-    }
+    });
 });
+
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('diagnose/{id}','ApiMobileController@getDiagnosesList');
     Route::get('symptom/{id?}', 'ApiMobileController@getSymptoms');
     Route::get('update/{version}', 'ApiMobileController@getDbVersion');
-    Route::get('trial/{email}', 'ApiMobileController@getTrial');
+    Route::post('trial', 'ApiMobileController@getTrial');
 
     Route::get('update/db/{version}/nanda.zip', 'ApiMobileController@getDbFile');
     Route::post('verification', 'ApiMobileController@getVerification');

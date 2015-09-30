@@ -13,7 +13,7 @@ class VerifyCsrfToken extends BaseVerifier {
 	 * @return mixed
 	 */
 
-    protected $except = ['api/payload', 'api/verification'];
+    protected $except = ['api/payload', 'api/verification', 'api/trial'];
 
 
 }
